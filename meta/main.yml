@@ -1,11 +1,10 @@
 ---
 galaxy_info:
-  author: Pablo Castillo
-  company: Crush & Lovely
-  description: Provision and Configure AWS cloudfront distributions
+  author: Ben Visser
+  company: TELUS digital
+  description: Create AWS Cloudfront distributions
   license: MIT
   min_ansible_version: 1.9
   categories:
     - cloud
-dependencies: []
-version: 1.0.0
+dependencies: 

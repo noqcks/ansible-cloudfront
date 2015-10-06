@@ -1,5 +1,4 @@
 {
-  "CallerReference": "{{ item.caller_reference|mandatory }}",
   "Aliases": {
     "Quantity": 0,
     "Items": []
@@ -14,13 +13,24 @@
         "S3OriginConfig": {
           "OriginAccessIdentity": ""
           },
-        "Id": "S3-{{ item.bucket_name }}",
-        "DomainName": "{{ item.bucket_name }}.s3.amazonaws.com"
+        {% if cloudfront_origin_type == 'ec2' %}
+        "Id": "{{ cloudfront_origin_location }}",
+        "DomainName": "cloudfront_origin_location"
+        {% endif %}
+        {% if cloudfront_origin_type == 's3' %}
+        "Id": "S3-{{ cloudfront_origin_location}}",
+        "DomainName": "{{ cloudfront_origin_location }}.s3.amazonaws.com"
+        {% endif %}
       }
     ]
   },
   "DefaultCacheBehavior": {
-    "TargetOriginId": "S3-{{ item.bucket_name }}",
+    {% if cloudfront_origin_type == 'ec2' %}
+    "TargetOriginId": "{{ cloudfront_origin_location }}",
+    {% endif %}
+    {% if cloudfront_origin_type == 's3' %}
+    "TargetOriginId": "S3-{{ cloudfront_origin_location }}",
+    {% endif %}
     "ForwardedValues": {
       "QueryString": false,
       "Cookies": {

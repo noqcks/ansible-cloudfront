@@ -1,10 +1,4 @@
 ---
-app_name: test
-server_env: qa
-aws_access_key: ""
-aws_secret_key: ""
-aws_s3:
-  - bucket_name: "{{ app_name }}-{{ server_env }}"
-    caller_reference: 1
-  - bucket_name: "{{ app_name }}-assets-{{ server_env }}"
-    caller_reference: 2
+project: ''
+cloudfront_origin_type: ec2
+cloudfront_origin_location: '' 

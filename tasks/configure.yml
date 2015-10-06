@@ -1,0 +1,13 @@
+---
+- name: Configure | create distro config and place in tmp directory
+  template: src=create-distro.json.j2 dest=/tmp/cloudfront-distribution.json
+
+- name: Configure | Create Cloudfront Distribution
+  command: "aws cloudfront create-distribution --distribution-config=file:///tmp/cloudfront-distribution.json --profile {{ project }}"
+
+- name: Configure | List Cloudfront distrinutions
+  shell: "aws cloudfront list-distributions --profile {{ project }} | grep DomainName"
+  register: cloudfront_results
+
+- debug: 
+    var: cloudfront_results
