@@ -2,3 +2,4 @@
 project: ''
 cloudfront_origin_type: ec2
 cloudfront_origin_location: '' 
+cloudfront_distribution_dns_name: ''
