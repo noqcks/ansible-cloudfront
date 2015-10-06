@@ -1,12 +1,19 @@
 ---
+- name: Enable Cloudfront API
+  command: aws configure set preview.cloudfront true    
+  tags: 
+    - cloudfront
+
 - name: Configure | create distro config and place in tmp directory
-  template: src=cloudfront-distribution.json dest=/tmp/cloudfront-distribution.json
+  template: 
+    src: cloudfront-distribution.json 
+    dest: /tmp/cloudfront-distribution.json
 
 - name: Configure | Create Cloudfront Distribution
-  command: "aws cloudfront create-distribution --distribution-config=file:///tmp/cloudfront-distribution.json --profile {{ project }}"
+  command: "aws cloudfront create-distribution --distribution-config=file:///tmp/cloudfront-distribution.json"
 
 - name: Configure | List Cloudfront distrinutions
-  shell: "aws cloudfront list-distributions --profile {{ project }} | grep DomainName"
+  shell: "aws cloudfront list-distributions | grep DomainName"
   register: cloudfront_results
 
 - debug: 
