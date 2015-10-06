@@ -1,79 +1,80 @@
 {
-  "CallerReference": "{{ 100000000000000000000 | random }}", 
-  "Aliases": {
-    "Quantity": 0,
-    "Items": []
-  },
-  "DefaultRootObject": "",
-  "PriceClass": "PriceClass_All",
-  "Enabled": false,
+  "Comment": "{{ ansible_managed }}", 
+  "CacheBehaviors": {
+    "Quantity": 0
+  }, 
+  "Logging": {
+    "Bucket": "", 
+    "Prefix": "", 
+    "Enabled": false, 
+    "IncludeCookies": false
+  }, 
   "Origins": {
     "Quantity": 1,
     "Items": [
       {
-        "S3OriginConfig": {
-          "OriginAccessIdentity": ""
-          },
-        {% if cloudfront_origin_type == 'ec2' %}
-        "Id": "{{ cloudfront_origin_location }}",
-        "DomainName": "cloudfront_origin_location"
-        {% endif %}
-        {% if cloudfront_origin_type == 's3' %}
-        "Id": "S3-{{ cloudfront_origin_location}}",
-        "DomainName": "{{ cloudfront_origin_location }}.s3.amazonaws.com"
-        {% endif %}
+        "CustomOriginConfig": {
+          "OriginProtocolPolicy": "match-viewer", 
+          "HTTPPort": 80, 
+          "HTTPSPort": 443
+        }, 
+        "Id": "Custom-{{ cloudfront_origin_location }}", 
+        "DomainName": "{{ cloudfront_origin_location }}"
       }
     ]
-  },
+  }, 
+  "DefaultRootObject": "", 
+  "PriceClass": "PriceClass_All", 
+  "Enabled": true, 
   "DefaultCacheBehavior": {
-    {% if cloudfront_origin_type == 'ec2' %}
-    "TargetOriginId": "{{ cloudfront_origin_location }}",
-    {% endif %}
-    {% if cloudfront_origin_type == 's3' %}
-    "TargetOriginId": "S3-{{ cloudfront_origin_location }}",
-    {% endif %}
-    "ForwardedValues": {
-      "QueryString": false,
-      "Cookies": {
-        "Forward": "none",
-        "WhitelistedNames": {
-          "Quantity": 0,
-          "Items": []
-        }
-      },
-      "Headers": {
-        "Quantity": 1,
-        "Items": ["Origin"]
-      }
-    },
     "TrustedSigners": {
-      "Enabled": false,
-      "Quantity": 0,
-      "Items": []
-    },
-    "ViewerProtocolPolicy": "allow-all",
-    "MinTTL": 0,
-    "AllowedMethods": {
-      "Quantity": 2,
-      "Items": ["GET","HEAD"],
-      "CachedMethods": {
-        "Quantity": 2,
-        "Items": ["GET","HEAD"]
-      }
-    }
-  },
-  "ViewerCertificate": {
-      "CloudFrontDefaultCertificate": true
-  },
-  "CustomErrorResponses": {
+      "Enabled": false, 
       "Quantity": 0
+    }, 
+    "TargetOriginId": "Custom-{{ cloudfront_origin_location }}", 
+    "ViewerProtocolPolicy": "allow-all", 
+    "ForwardedValues": {
+      "Headers": {
+        "Quantity": 0
+      }, 
+      "Cookies": {
+        "Forward": "all"
+      }, 
+      "QueryString": true
+    }, 
+    "SmoothStreaming": false, 
+    "AllowedMethods": {
+      "Items": [
+        "HEAD", 
+        "GET"
+      ], 
+      "CachedMethods": {
+        "Items": [
+          "HEAD", 
+          "GET"
+        ], 
+        "Quantity": 2
+      }, 
+      "Quantity": 2
+    }, 
+    "MinTTL": 0
   },
+  "CallerReference": "{{ 100000000000000000000 | random }}", 
+  "ViewerCertificate": {
+    "CloudFrontDefaultCertificate": true, 
+    "MinimumProtocolVersion": "SSLv3"
+  }, 
+  "CustomErrorResponses": {
+    "Quantity": 0
+  }, 
   "Restrictions": {
-      "GeoRestriction": {
-          "RestrictionType": "none",
-          "Quantity": 0
-      }
-  },
-  "Comment": "Created with Ansible",
-  "Enabled": true
+    "GeoRestriction": {
+      "RestrictionType": "none", 
+      "Quantity": 0
+    }
+  }, 
+  "Aliases": {
+    "Items": [], 
+    "Quantity": 0
+  }
 }
